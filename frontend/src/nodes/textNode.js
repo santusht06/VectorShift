@@ -9,7 +9,6 @@ export const TextNode = ({ id }) => {
 
   const variables = useMemo(() => extractVariables(text), [text]);
 
-  // stable dependency
   const variableKey = variables.join(",");
 
   useEffect(() => {
@@ -20,13 +19,13 @@ export const TextNode = ({ id }) => {
     <BaseNode title="Text" inputs={variables} outputs={["output"]}>
       <textarea
         value={text}
-        onChange={(e) => {
-          setText(e.target.value);
-
-          e.target.style.height = "auto";
-          e.target.style.height = e.target.scrollHeight + "px";
+        onChange={(e) => setText(e.target.value)}
+        style={{
+          width: "100%",
+          height: "100%",
+          resize: "none",
+          flex: 1,
         }}
-        style={{ width: "100%" }}
       />
     </BaseNode>
   );

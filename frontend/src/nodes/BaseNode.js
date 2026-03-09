@@ -1,4 +1,4 @@
-import { Handle, Position } from "reactflow";
+import { Handle, Position, NodeResizer } from "reactflow";
 
 export const BaseNode = ({ title, inputs = [], outputs = [], children }) => {
   return (
@@ -6,19 +6,19 @@ export const BaseNode = ({ title, inputs = [], outputs = [], children }) => {
       className="node"
       style={{
         position: "relative",
-        padding: 10,
         border: "1px solid #ddd",
         borderRadius: 8,
         background: "#fff",
         minWidth: 150,
+        minHeight: 80,
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
       }}
     >
-      <div
-        className="node-title"
-        style={{ fontWeight: "bold", marginBottom: 8 }}
-      >
-        {title}
-      </div>
+      <NodeResizer minWidth={150} minHeight={80} />
+
+      <div style={{ fontWeight: "bold", padding: "8px" }}>{title}</div>
 
       {inputs.map((id, i) => (
         <Handle
@@ -30,7 +30,17 @@ export const BaseNode = ({ title, inputs = [], outputs = [], children }) => {
         />
       ))}
 
-      <div className="node-content">{children}</div>
+      {/* Content Area */}
+      <div
+        style={{
+          flex: 1,
+          padding: "8px",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {children}
+      </div>
 
       {outputs.map((id, i) => (
         <Handle
