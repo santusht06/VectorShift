@@ -1,26 +1,55 @@
-import { Handle, Position } from "reactflow";
+import { Handle, Position, NodeResizer } from "reactflow";
 
-export const BaseNode = ({ title, children, inputs = [], outputs = [] }) => {
+export const BaseNode = ({ title, inputs = [], outputs = [], children }) => {
   return (
     <div
+      className="node"
       style={{
-        border: "1px solid #333",
-        borderRadius: "8px",
-        padding: "10px",
+        position: "relative",
+        border: "1px solid #ddd",
+        borderRadius: 8,
         background: "#fff",
-        minWidth: "150px",
+        minWidth: 150,
+        minHeight: 80,
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
       }}
     >
-      <div style={{ fontWeight: "bold", marginBottom: "5px" }}>{title}</div>
+      <NodeResizer minWidth={150} minHeight={80} />
 
-      {inputs.map((id) => (
-        <Handle key={id} type="target" position={Position.Left} id={id} />
+      <div style={{ fontWeight: "bold", padding: "8px" }}>{title}</div>
+
+      {inputs.map((id, i) => (
+        <Handle
+          key={`input-${id}-${i}`}
+          type="target"
+          position={Position.Left}
+          id={`input-${id}`}
+          style={{ top: 40 + i * 20 }}
+        />
       ))}
 
-      <div>{children}</div>
+      {/* Content Area */}
+      <div
+        style={{
+          flex: 1,
+          padding: "8px",
+          display: "flex",
+          flexDirection: "column",
+        }}
+      >
+        {children}
+      </div>
 
-      {outputs.map((id) => (
-        <Handle key={id} type="source" position={Position.Right} id={id} />
+      {outputs.map((id, i) => (
+        <Handle
+          key={`output-${id}-${i}`}
+          type="source"
+          position={Position.Right}
+          id={`output-${id}`}
+          style={{ top: 40 + i * 20 }}
+        />
       ))}
     </div>
   );
