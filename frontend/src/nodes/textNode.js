@@ -1,35 +1,33 @@
-// textNode.js
+import { useState, useMemo, useEffect } from "react";
+import { useUpdateNodeInternals } from "reactflow";
+import { BaseNode } from "./BaseNode";
+import { extractVariables } from "../utils/extractVariables";
 
-import { useState } from 'react';
-import { Handle, Position } from 'reactflow';
+export const TextNode = ({ id }) => {
+  const [text, setText] = useState("");
+  const updateNodeInternals = useUpdateNodeInternals();
 
-export const TextNode = ({ id, data }) => {
-  const [currText, setCurrText] = useState(data?.text || '{{input}}');
+  const variables = useMemo(() => extractVariables(text), [text]);
 
-  const handleTextChange = (e) => {
-    setCurrText(e.target.value);
-  };
+  // stable dependency
+  const variableKey = variables.join(",");
+
+  useEffect(() => {
+    updateNodeInternals(id);
+  }, [variableKey, id, updateNodeInternals]);
 
   return (
-    <div style={{width: 200, height: 80, border: '1px solid black'}}>
-      <div>
-        <span>Text</span>
-      </div>
-      <div>
-        <label>
-          Text:
-          <input 
-            type="text" 
-            value={currText} 
-            onChange={handleTextChange} 
-          />
-        </label>
-      </div>
-      <Handle
-        type="source"
-        position={Position.Right}
-        id={`${id}-output`}
+    <BaseNode title="Text" inputs={variables} outputs={["output"]}>
+      <textarea
+        value={text}
+        onChange={(e) => {
+          setText(e.target.value);
+
+          e.target.style.height = "auto";
+          e.target.style.height = e.target.scrollHeight + "px";
+        }}
+        style={{ width: "100%" }}
       />
-    </div>
+    </BaseNode>
   );
-}
+};
