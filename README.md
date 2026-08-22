@@ -15,3 +15,12 @@ VectorShift is a web application for building and submitting graph pipelines. Us
 `POST http://localhost:8000/pipelines/parse`
 
 **Request body**
+```json
+{
+  "nodes": [...],
+  "edges": [
+    {"source": "node_id_1", "target": "node_id_2"},
+    ...
+  ]
+}
+```
