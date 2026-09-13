@@ -32,3 +32,4 @@ VectorShift is a web application for building and submitting graph pipelines. Us
   "num_edges": <int>,
   "is_dag": <bool>
 }
+```
